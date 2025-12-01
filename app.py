@@ -349,6 +349,38 @@ st.markdown("""
     .osteology-card h4 {
         color: #1e3a5f !important;
     }
+    
+    /* NUCLEAR OPTION: Hide ALL white/gray backgrounds from Streamlit's auto-generated elements */
+    .stApp > div > div > div > div > div > div[data-testid="stVerticalBlockBorderWrapper"] > div {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Target the specific white bar element */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+    
+    div[data-testid="stVerticalBlockBorderWrapper"] > div {
+        background: transparent !important;
+        border: none !important;
+    }
+    
+    /* Remove border wrapper styling */
+    .st-emotion-cache-1wbqy5l,
+    .st-emotion-cache-1xarl3l,
+    .st-emotion-cache-1bt9eao,
+    .st-emotion-cache-1kyxreq,
+    .st-emotion-cache-16txtl3 {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
