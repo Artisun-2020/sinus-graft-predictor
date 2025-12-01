@@ -241,6 +241,25 @@ st.markdown("""
         color: #00d4ff;
         text-decoration: none;
     }
+    
+    /* Fix form container background */
+    [data-testid="stForm"] {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+    
+    /* Fix form border */
+    [data-testid="stForm"] > div {
+        background: transparent !important;
+        border: none !important;
+    }
+    
+    /* Style all form inner elements */
+    .stForm {
+        background: transparent !important;
+        border: none !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
