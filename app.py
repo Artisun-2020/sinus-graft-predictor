@@ -242,144 +242,58 @@ st.markdown("""
         text-decoration: none;
     }
     
-    /* Fix form container background */
-    [data-testid="stForm"] {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-    
-    /* Fix form border */
-    [data-testid="stForm"] > div {
-        background: transparent !important;
-        border: none !important;
-    }
-    
-    /* Style all form inner elements */
-    .stForm {
-        background: transparent !important;
-        border: none !important;
-    }
-    
-    /* Fix ALL white backgrounds in Streamlit elements */
-    .stMarkdown, .stNumberInput, .stSelectbox, .stFileUploader {
-        background: transparent !important;
-    }
-    
-    /* Fix element container backgrounds */
-    [data-testid="stFormSubmitButton"],
-    [data-testid="element-container"],
-    [data-testid="stVerticalBlock"],
-    [data-testid="stHorizontalBlock"],
-    [data-testid="column"] {
-        background: transparent !important;
-    }
-    
-    /* Fix the white box around the form */
-    .st-emotion-cache-1wmy9hl,
-    .st-emotion-cache-ue6h4q,
-    .st-emotion-cache-1kyxreq,
-    .st-emotion-cache-ocqkz7,
-    .element-container {
-        background: transparent !important;
-    }
-    
-    /* Make columns equal and symmetric */
-    [data-testid="column"] {
-        padding: 0 15px !important;
-    }
-    
-    /* Force form to have no border/background */
+    /* Form container styled as card */
     form[data-testid="stForm"] {
-        background: transparent !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        border-radius: 20px !important;
+        padding: 30px 35px !important;
+        margin: 20px auto !important;
+        max-width: 1200px;
         border: none !important;
-        box-shadow: none !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
     }
-    
-    /* Target the specific form wrapper */
-    div[data-testid="stForm"] > div:first-child {
+
+    form[data-testid="stForm"] > div {
         background: transparent !important;
         border: none !important;
-        box-shadow: none !important;
         padding: 0 !important;
     }
-    
-    /* AGGRESSIVE fix for ALL possible white backgrounds */
-    div[data-testid="stForm"],
-    div[data-testid="stForm"] > div,
-    div[data-testid="stForm"] > div > div,
-    .st-emotion-cache-4uzi61,
-    .st-emotion-cache-r421ms,
-    .st-emotion-cache-1gulkj5,
-    .st-emotion-cache-nahz7x {
+
+    /* Prevent Streamlit border wrapper from adding white background */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
         background: transparent !important;
-        background-color: transparent !important;
         border: none !important;
         box-shadow: none !important;
     }
-    
-    /* Fix any remaining white boxes */
-    [class*="st-emotion-cache"] {
-        background-color: transparent !important;
+
+    div[data-testid="stVerticalBlockBorderWrapper"] > div {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
     }
-    
-    /* But keep card backgrounds white */
-    .osteology-card {
-        background: rgba(255, 255, 255, 0.95) !important;
-    }
-    
-    /* Equal column widths */
+
+    /* Balanced columns */
     [data-testid="stHorizontalBlock"] > [data-testid="column"] {
         flex: 1 1 50% !important;
         min-width: 0 !important;
+        padding: 0 15px !important;
     }
-    
+
     /* Input fields styling for visibility */
     .stNumberInput input,
     .stSelectbox > div > div,
     .stFileUploader > div {
         background: white !important;
         color: #1e3a5f !important;
+        border-radius: 10px !important;
     }
-    
-    /* Labels should be dark inside the card */
-    .osteology-card label,
-    .osteology-card .stMarkdown p,
-    .osteology-card h3,
-    .osteology-card h4 {
+
+    /* Form labels should be dark */
+    form[data-testid="stForm"] label,
+    form[data-testid="stForm"] .stMarkdown p,
+    form[data-testid="stForm"] h3,
+    form[data-testid="stForm"] h4 {
         color: #1e3a5f !important;
-    }
-    
-    /* NUCLEAR OPTION: Hide ALL white/gray backgrounds from Streamlit's auto-generated elements */
-    .stApp > div > div > div > div > div > div[data-testid="stVerticalBlockBorderWrapper"] > div {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-    }
-    
-    /* Target the specific white bar element */
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-    }
-    
-    div[data-testid="stVerticalBlockBorderWrapper"] > div {
-        background: transparent !important;
-        border: none !important;
-    }
-    
-    /* Remove border wrapper styling */
-    .st-emotion-cache-1wbqy5l,
-    .st-emotion-cache-1xarl3l,
-    .st-emotion-cache-1bt9eao,
-    .st-emotion-cache-1kyxreq,
-    .st-emotion-cache-16txtl3 {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -506,9 +420,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==================== Main Application ====================
-st.markdown('<div class="osteology-card">', unsafe_allow_html=True)
 st.markdown('<h2 class="section-title">Clinical Prediction Form</h2>', unsafe_allow_html=True)
-
 st.markdown("""
 <div class="info-box">
     Please enter the patient's clinical information and CT measurement data below. 
@@ -519,46 +431,55 @@ st.markdown("""
 # Create a form for input
 with st.form("prediction_form"):
     col_clinical, col_ct = st.columns(2)
-    
+
     with col_clinical:
         st.markdown("### 📝 Clinical Information")
-        
+
         # Basic info
-        age = st.number_input("Age (years)", min_value=18, max_value=90, value=50, 
-                             help="Patient age at surgery")
+        age = st.number_input(
+            "Age (years)",
+            min_value=18,
+            max_value=90,
+            value=50,
+            help="Patient age at surgery"
+        )
         sex = st.selectbox("Sex", ["Male", "Female"])
         smoking = st.selectbox("Smoking History", ["No", "Yes"])
-        
+
         st.markdown("### 🏥 Medical History")
         diabetes = st.selectbox("Diabetes", ["No", "Yes"])
         hypertension = st.selectbox("Hypertension", ["No", "Yes"])
-        
+
         st.markdown("### 🧪 Laboratory Values (Optional)")
         hba1c = st.number_input("HbA1c (%)", min_value=4.0, max_value=12.0, value=5.5, step=0.1)
         glucose = st.number_input("Fasting Glucose (mmol/L)", min_value=3.0, max_value=15.0, value=5.0, step=0.1)
 
     with col_ct:
         st.markdown("### 📋 CT / Surgical Assessment")
-        
+
         st.markdown("#### Pre-operative (T0)")
         periodontitis = st.selectbox("Periodontitis", ["No", "Yes"])
         membrane_status = st.selectbox("Membrane Perforation", ["No", "Yes"])
         immediate_implant = st.selectbox("Immediate Implant Placement", ["No", "Yes"])
-        
+
         st.markdown("#### Post-operative (T1)")
-        t1_av = st.number_input("Measured Graft Volume (mm³)", min_value=100.0, max_value=5000.0, 
-                                value=1200.0, step=50.0,
-                                help="Bone graft volume measured from post-operative CBCT")
-        
+        t1_av = st.number_input(
+            "Measured Graft Volume (mm³)",
+            min_value=100.0,
+            max_value=5000.0,
+            value=1200.0,
+            step=50.0,
+            help="Bone graft volume measured from post-operative CBCT"
+        )
+
         st.markdown("#### CT Data Upload (Optional)")
         uploaded_file = st.file_uploader("Upload CT (DICOM)", type=['dcm'])
         if uploaded_file is not None:
             st.success("✅ DICOM file uploaded successfully")
-        
+
     # Submit button
     st.markdown("<br>", unsafe_allow_html=True)
     predict_btn = st.form_submit_button("🔮 Generate Prediction", use_container_width=True)
-
 if predict_btn:
     # Prepare features
     features = {
