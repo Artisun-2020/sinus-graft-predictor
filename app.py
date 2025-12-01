@@ -72,6 +72,7 @@ st.markdown("""
         margin: 15px auto;
         max-width: 1200px;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        color: #1e3a5f;
     }
     
     .osteology-card-dark {
@@ -405,7 +406,11 @@ with st.form("prediction_form"):
         immediate_implant = st.selectbox("Immediate Implant Placement", ["No", "Yes"])
         
         st.markdown("#### Post-operative (T1)")
-        t1_av = st.number_input("T1 Graft Volume (mm³)", min_value=100.0, max_value=5000.0, 
+        uploaded_file = st.file_uploader("Upload CT (DICOM)", type=['dcm'])
+        if uploaded_file is not None:
+            st.success("✅ DICOM file uploaded successfully")
+            
+        t1_av = st.number_input("Measured Graft Volume (mm³)", min_value=100.0, max_value=5000.0, 
                                 value=1200.0, step=50.0,
                                 help="Bone graft volume measured from post-operative CBCT")
         
@@ -542,7 +547,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown("""
 <div class="footer">
     <p><strong>Sinus Graft Absorption Predictor</strong></p>
-    <p>Developed by Sun.SQ Lab | School of Stomatology, Shandong University</p>
+    <p>Developed by Sun.SQ Lab</p>
     <p style="margin-top: 15px; font-size: 0.8rem;">
         This tool is for research and educational purposes only. 
         Clinical decisions should always be made by qualified healthcare professionals.
